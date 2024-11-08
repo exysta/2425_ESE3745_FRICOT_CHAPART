@@ -13,6 +13,12 @@ Cahier des charges :
 Pour que la PWM est une fréquence de 20kHz, sachant que Fsys = 170 MHz, on doit fixer ARR + 1 = 8500. La résolution est d'environ 13 bits.
 
 Pour les tests, on fixe le rapport cyclique à 60%.
-On a 60% = (CRR + 1) / (ARR + 1)
+On a 60% = (CCR + 1) / (ARR + 1)
 donc on fixe un CCR à 5099 (cela revient à changer le pulse dans l'ioc pour chaque channel).
+
+Pour obtenir un complémentaire décalé, l'autre PWM doit avoir un rapport cyclique de 1-0.6 = 0.4 donc CCR = 3399.
+
+la valeur à mettre dans le registre DTG pour le dead time est 000 10100. on configure un pas d'environ 5.8 ns basé sur notre sysclock à 170 MHz en mettant les 3 premiers bits à 0.
+ENsuit, on écrit 20 en binaire sur les 5 derniers bits pour avoir un deadtime total de 5.8 * 20 = 114ns. c'est ce qu'il nous faut. Cela coresspond à une valeur en décimal de 20 à mettre dans l'ioc dans la partie DeadTime.
+
 Une fois les PWM générées, on les affiche sur un oscilloscope.
