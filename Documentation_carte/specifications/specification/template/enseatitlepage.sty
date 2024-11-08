@@ -1,0 +1,111 @@
+\ProvidesPackage{enseatitlepage}[2021/04/26 titlepages ensea style]
+
+ \RequirePackage{etoolbox}
+ \RequirePackage{xcolor} 
+ \RequirePackage{tikz}
+ 
+ \definecolor{ensea}{RGB}{166,0,76} 
+ \definecolor{vert}{RGB}{149,196,31} 
+ \definecolor{jaune}{RGB}{222,220,0} 
+ \definecolor{bleu}{RGB}{0,170,208} 
+ \definecolor{orange}{RGB}{233,81,27} 
+
+ \ifundef{\KOMAClassName}{
+  \@ifclassloaded{memoir}{\PackageWarningNoLine{enseatitlepage}{Using
+   memoir. Memoir has its own mechanism of
+   generating stuff. Not loading
+  `scrextend'. Aborting now}
+  \endinput
+ }{
+  \typeout{You seem to be using a standard class.
+   Using package `scrextend' for nice
+  features}
+  \RequirePackage[extendedfeature=title]{scrextend}
+ }
+ \typeout{non-KOMA branch}
+}{
+ \typeout{Using a KOMA class, no need to load package scrextend}
+}
+   \newcommand{\@supervisor}{}
+   \newcommand{\supervisor}[1]{\gdef\@supervisor{#1}}
+   \newkomafont{supervisor}{\normalfont\normalsize}
+   \newcommand{\@degree}{}
+   \newcommand{\degree}[1]{\gdef\@degree{#1}}
+   \newkomafont{degree}{\normalfont\normalsize}
+   \newcommand*{\@thanksnote}{}
+   \newcommand*{\thanksnote}[1]{\gdef\@thanksnote{#1}}
+   \newkomafont{thanksnote}{\small\itshape}
+   \newcommand{\@@thanksnote}{\begin{minipage}{\linewidth}
+    \usekomafont{thanksnote}\@thanksnote\par\end{minipage}\par}
+ \renewcommand{\maketitle}{%
+  \begin{titlepage}
+   \setlength{\parindent}{\z@}
+   \setlength{\parskip}{\z@}
+   \typeout{Typesetting the titlepage}
+  \begin{tikzpicture}[remember picture, overlay]
+    \node at (current page.north west){
+    \begin{tikzpicture}[remember picture, overlay]
+    
+    \node[] at (12.6,-8.1)
+      {\includegraphics[width=7.5cm]{Logo ENSEA 2021 vec-protected}};
+
+    \path[fill=ensea](0,-16.15) rectangle ++(21,-7.75);
+    \node[anchor=center] at (12.75,-20)
+      {%
+        \begin{minipage}{13.7cm}
+         {\usekomafont{title}\color{white}\LARGE\MakeUppercase{\@title}\par}
+         \ifx\@subtitle\@empty \else
+            \vspace{1em}
+            {\usekomafont{subtitle}\color{white}\@subtitle\par}
+         \fi
+         \ifx\@subject\@empty \else
+            \vspace{3em}
+            {\usekomafont{subject}\color{white}\@subject\par}
+         \fi
+         \ifx\@degree\@empty \else
+            \vspace{3em}
+            {\usekomafont{degree}\color{white}\@degree\par}
+         \fi
+        \end{minipage}        
+      };
+      
+    \node [anchor=north west,inner sep=0pt] at (0,0)
+      {\includegraphics[height=\paperheight]{Poly bande photos.jpg}};
+
+    \ifx\@author\@empty
+         \ifx\@date\@empty \else
+           \path[fill=ensea] (20.2,-27.3) rectangle ++(0.04,-1.6);
+         \fi
+      \else
+        \path[fill=ensea] (20.2,-27.3) rectangle ++(0.04,-1.6);
+    \fi  
+    \node[anchor=east,align=right] at (20,-28.1)
+    {
+    \ifx\@author\@empty \else
+      {\usekomafont{author}\@author\par}
+    \fi
+    \ifx\@author\@empty \else
+      \ifx\@date\@empty \else
+        \\[0.5em]
+      \fi
+    \fi
+    \ifx\@date\@empty \else
+      {\usekomafont{date}\@date\par}
+    \fi
+    };        
+
+    \ifx\@titlehead\@empty \else
+      %\path[fill=ensea] (20.2,-2.4) rectangle ++(0.04,1.6); 
+      \node[anchor=east,align=right] at (20,-1.6)
+      {
+        {\usekomafont{titlehead}\normalfont\itshape\@titlehead\par}
+      };        
+    \fi
+
+    
+     \end{tikzpicture}%
+   };
+   
+   \end{tikzpicture}%
+  \end{titlepage}%
+}

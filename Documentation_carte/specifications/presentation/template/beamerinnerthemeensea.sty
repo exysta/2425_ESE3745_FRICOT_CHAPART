@@ -1,0 +1,57 @@
+\mode<presentation>
+
+\setbeamertemplate{background}{
+  \begin{tikzpicture}
+  \useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+  \ifnum\thepage=1\relax%
+  \node[anchor=south west,inner sep=0] at (0.213*\the\paperwidth,0) 
+      {\includegraphics[width=0.755\paperwidth]{Powerpoint ENSEA 2021 16-9 p2}};
+  \node at (0.616*\the\paperwidth,0.78*\the\paperheight) 
+      {\includegraphics[width=0.16\paperwidth]{Logo ENSEA 2021 vec-protected}};
+  \fill[color=erouge] (0,0.228*\the\paperheight) 
+      rectangle (\the\paperwidth,0.552*\the\paperheight);
+  \node[anchor=south west,inner sep=0,outer sep=0] at (0,0)
+      {\includegraphics[height=\the\paperheight]{ensea-batiment.png}};
+  \fi
+  \ifnum\thepage>1\relax%
+   \fill[white,opacity=1] (0,0) rectangle(\the\paperwidth,\the\paperheight);
+   \node[anchor=south west,inner sep=0,outer sep=0] at (0,0)
+      {\includegraphics[height=\the\paperheight]{Powerpoint ENSEA 2021 16-9 p5}};
+  
+  % pos: sw (1,18.3) wh: (1.9,2.1) slide: (33.9,19) 
+  \node[anchor=south west,inner sep=0pt] at (0.472,0.331) 
+      {\includegraphics[width=0.896cm]{Logo ENSEA 2021 vec}};
+  \fi
+  \end{tikzpicture}
+}
+
+% Title page
+\defbeamertemplate*{title page}{ensea}[1][]
+{ 
+   \vskip4.2cm%
+    \begin{beamercolorbox}[wd=\textwidth,leftskip=3.48cm,#1]{title page header}
+      \usebeamerfont{title}\bfseries\MakeUppercase{\inserttitle}\par%
+      \vskip0.4cm%
+      \usebeamerfont{subtitle}{\insertsubtitle}\par%
+      \vskip0.4cm%
+      \usebeamerfont{institute}{\insertinstitute}\par%
+    \end{beamercolorbox}%
+    \vfill
+    \begin{beamercolorbox}[wd=\textwidth,right,#1]{author}
+      \usebeamerfont{author}\insertauthor%
+    \end{beamercolorbox}
+     \vskip0.2cm% 
+    \begin{beamercolorbox}[wd=\textwidth,right,#1]{date}
+      \usebeamerfont{author}\insertdate%
+    \end{beamercolorbox}
+    \vskip-1cm%  
+}
+
+
+% Items
+\setbeamertemplate{items}[square]
+\setbeamertemplate{sections/subsections in toc}[square]
+
+
+\mode
+<all>

@@ -1,0 +1,63 @@
+\RequirePackage{calc}
+
+\mode<presentation>
+
+\setbeamersize{text margin left=0cm,text margin right=0.4cm}
+\setbeamersize{sidebar width left=1.6cm}
+
+% Settings
+% Frame title
+\defbeamertemplate*{frametitle}{ensea}[1][]
+{%
+  \nointerlineskip%
+  \ifx\insertframesubtitle\@empty%
+    \begin{beamercolorbox}[wd=\textwidth,ht=.8cm,dp=.2cm,left]{frametitle}%
+    {\usebeamerfont{frametitle}\insertframetitle\par}
+  \else%
+    \begin{beamercolorbox}[wd=\textwidth,ht=1.2cm,dp=.2cm,left]{frametitle}%
+    {\usebeamerfont{frametitle}\insertframetitle\par}
+    {\usebeamerfont{framesubtitle}\insertframesubtitle\par}
+  \fi%
+  \end{beamercolorbox}
+}
+
+\setbeamertemplate{page number in head/foot}[totalframenumber]%
+
+\newsavebox{\lfooter}
+\patchcmd{\beamer@calculateheadfoot}{\advance\footheight by 4pt}{\advance\footheight by 20pt}{}{}
+
+\defbeamertemplate*{footline}{ensea}
+{%
+  \savebox{\lfooter}{%
+    \usebeamercolor[fg]{author in head/foot}%
+      \usebeamerfont{author in head/foot}%
+        \insertshortauthor{}%
+    \makebox[2ex+\widthof{\inserttotalframenumber/\inserttotalframenumber}][r]{%
+    \usebeamercolor[fg]{page number in head/foot}%
+      \usebeamerfont{page number in head/foot}%
+        \usebeamertemplate{page number in head/foot}%
+    }%
+  }%
+\ifnum\thepage=1\relax%
+  {\vrule height 2.25ex depth 1ex width 0pt}
+\else
+  \leavevmode%
+  \color{egray1}\hfill\rule{\widthof{\usebox{\lfooter}}}{0.9mm}\hspace*{2ex}\par
+  \hbox{%
+  %\hspace*{0.666667\paperwidth}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,right]{section in head/foot}%
+    %\insertsectionhead\hspace{1ex}%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.3\paperwidth,ht=2.25ex,dp=1ex,left]{subsection in head/foot}%
+    %\hspace{1ex}\insertsubsectionhead
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebox{\lfooter}\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+\fi
+}
+
+
+\mode
+<all>
