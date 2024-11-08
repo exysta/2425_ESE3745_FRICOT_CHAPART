@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (11.3.rel1)
+# Toolchain: GNU Tools for STM32 (12.3.rel1)
 ################################################################################
 
 -include ../makefile.init
@@ -35,34 +35,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := NUCLEO-G474RET6-Inverter_Pinout
+BUILD_ARTIFACT_NAME := TP_ACTIONNEUR_FRICOT_CHAPART
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-NUCLEO-G474RET6-Inverter_Pinout.elf \
+TP_ACTIONNEUR_FRICOT_CHAPART.elf \
 
 MAP_FILES += \
-NUCLEO-G474RET6-Inverter_Pinout.map \
+TP_ACTIONNEUR_FRICOT_CHAPART.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-NUCLEO-G474RET6-Inverter_Pinout.list \
+TP_ACTIONNEUR_FRICOT_CHAPART.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: NUCLEO-G474RET6-Inverter_Pinout.elf secondary-outputs
+main-build: TP_ACTIONNEUR_FRICOT_CHAPART.elf secondary-outputs
 
 # Tool invocations
-NUCLEO-G474RET6-Inverter_Pinout.elf NUCLEO-G474RET6-Inverter_Pinout.map: $(OBJS) $(USER_OBJS) /home/nicolas/git/AAP_ENSEA_Inverter/software/NUCLEO-G474RET6-Inverter_Pinout/STM32G474RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "NUCLEO-G474RET6-Inverter_Pinout.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/nicolas/git/AAP_ENSEA_Inverter/software/NUCLEO-G474RET6-Inverter_Pinout/STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-G474RET6-Inverter_Pinout.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+TP_ACTIONNEUR_FRICOT_CHAPART.elf TP_ACTIONNEUR_FRICOT_CHAPART.map: $(OBJS) $(USER_OBJS) /home/exysta/2425_ESE3745_FRICOT_CHAPART/CubeIde/STM32G474RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "TP_ACTIONNEUR_FRICOT_CHAPART.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/exysta/2425_ESE3745_FRICOT_CHAPART/CubeIde/STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TP_ACTIONNEUR_FRICOT_CHAPART.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -71,14 +71,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-NUCLEO-G474RET6-Inverter_Pinout.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "NUCLEO-G474RET6-Inverter_Pinout.list"
+TP_ACTIONNEUR_FRICOT_CHAPART.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "TP_ACTIONNEUR_FRICOT_CHAPART.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) NUCLEO-G474RET6-Inverter_Pinout.elf NUCLEO-G474RET6-Inverter_Pinout.list NUCLEO-G474RET6-Inverter_Pinout.map default.size.stdout
+	-$(RM) TP_ACTIONNEUR_FRICOT_CHAPART.elf TP_ACTIONNEUR_FRICOT_CHAPART.list TP_ACTIONNEUR_FRICOT_CHAPART.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

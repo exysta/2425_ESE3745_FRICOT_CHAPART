@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 
-uint8_t prompt[]="user@Nucleo-STM32G474RET6>>";
+uint8_t prompt[]="lulu_chaha@Nucleo-STM32G474RET6>>";
 uint8_t started[]=
 		"\r\n*-----------------------------*"
 		"\r\n| Welcome on Nucleo-STM32G474 |"
