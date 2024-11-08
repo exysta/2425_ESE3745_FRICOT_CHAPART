@@ -12,5 +12,5 @@ Cahier des charges :
 
 Pour que la PWM est une fréquence de 20kHz, sachant que Fsys = 170 MHz, on doit fixer ARR + 1 = 8500. La résolution est d'environ 13 bits.
 
-Pour les tests, on fixe le rapport cyclique à 60%. donc on fixe un CCR à 5100
+Pour les tests, on fixe le rapport cyclique à 60%. donc on fixe un CCR à 5099
 Une fois les PWM générées, on les affiche sur un oscilloscope.
