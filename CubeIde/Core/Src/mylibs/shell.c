@@ -6,8 +6,13 @@
  */
 #include "usart.h"
 #include "mylibs/shell.h"
+#include "mylibs/pwm.h"
+
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
+#include <stdlib.h>
 
 uint8_t prompt[]="lulu_chaha@Nucleo-STM32G474RET6>>";
 uint8_t started[]=
@@ -30,6 +35,33 @@ int		 	argc = 0;
 char*		token;
 int 		newCmdReady = 0;
 
+int speed(char **argv,int argc)
+{
+	uint32_t speed = atoi(argv[1]);//speed in expected in % of max speed
+	if(argc != 2)
+	{
+		uint8_t error_message[] = "Error : speed function expect exactly 1 parameter \r\n";
+		HAL_UART_Transmit(&huart2, error_message, sizeof(error_message), HAL_MAX_DELAY);
+		return 1;
+	}
+//	else if(!isdigit(speed))
+//	{
+//		uint8_t error_message[] = " Error : speed function expect a parameter that is an int represention \r\n";
+//		HAL_UART_Transmit(&huart2, error_message, sizeof(error_message), HAL_MAX_DELAY);
+//		return 1;
+//	}
+	else if(speed > 95)//on vérifie qu'on met pas la vitesse ne soit pas au dessus de 95% de la max par sécurité
+	{
+		uint8_t error_message[] = "speed function must not exceed 95% of max value  \r\n";
+		HAL_UART_Transmit(&huart2, error_message, sizeof(error_message), HAL_MAX_DELAY);
+	}
+	set_pulse(speed);
+	uint8_t * success_message = "speed set to %lu of max value  \r\n";
+	snprintf((char *)success_message, sizeof(success_message), "speed set to %lu of max value \r\n", (unsigned long)speed);
+	HAL_UART_Transmit(&huart2, success_message, sizeof(success_message), HAL_MAX_DELAY);
+
+}
+
 void Shell_Init(void){
 	memset(argv, NULL, MAX_ARGS*sizeof(char*));
 	memset(cmdBuffer, NULL, CMD_BUFFER_SIZE*sizeof(char));
@@ -40,6 +72,7 @@ void Shell_Init(void){
 	HAL_UART_Transmit(&huart2, started, strlen((char *)started), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart2, prompt, strlen((char *)prompt), HAL_MAX_DELAY);
 }
+
 
 void Shell_Loop(void){
 	if(uartRxReceived){
@@ -75,6 +108,9 @@ void Shell_Loop(void){
 		else if(strcmp(argv[0],"help")==0){
 			int uartTxStringLength = snprintf((char *)uartTxBuffer, UART_TX_BUFFER_SIZE, "Print all available functions here\r\n");
 			HAL_UART_Transmit(&huart2, uartTxBuffer, uartTxStringLength, HAL_MAX_DELAY);
+		}
+		else if(strcmp(argv[0],"speed")==0){
+			speed(argv,argc);
 		}
 		else{
 			HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
