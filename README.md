@@ -14,5 +14,5 @@ Pour que la PWM est une fréquence de 20kHz, sachant que Fsys = 170 MHz, on doit
 
 Pour les tests, on fixe le rapport cyclique à 60%.
 On a 60% = (CRR + 1) / (ARR + 1)
-donc on fixe un CCR à 5099 
+donc on fixe un CCR à 5099 (cela revient à changer le pulse dans l'ioc pour chaque channel).
 Une fois les PWM générées, on les affiche sur un oscilloscope.
