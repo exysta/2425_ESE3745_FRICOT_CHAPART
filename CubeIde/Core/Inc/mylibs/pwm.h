@@ -8,13 +8,15 @@
 #ifndef INC_MYLIBS_PWM_H_
 #define INC_MYLIBS_PWM_H_
 
+#include "shell.h"
 
 #define MAX_PULSE 8499
 #define NEUTRAL_PULSE 4249 // pulse auquel le moteur ne tourne pas
 #define RAMP_TIME 6000 //temps en milisecondes pour changer de pulse
-void PWM_set_pulse(uint32_t speed);
-void PWM_Start();
-void PWM_Stop();
+int PWM_Set_Pulse(uint32_t speed);
+int PWM_Speed_Control(h_shell_t *h_shell,char **argv,int argc);
+int PWM_Start(h_shell_t *h_shell,char **argv,int argc);
+int PWM_Stop(h_shell_t *h_shell,char **argv,int argc);
 
 // pwm.h
 // Define a struct to hold PWM-related variables

@@ -7,12 +7,14 @@
 #include "usart.h"
 #include "mylibs/shell.h"
 #include "mylibs/pwm.h"
+#include "mylibs/mesure_courant.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdlib.h>
+
 
 uint8_t prompt[]="lulu_chaha@Nucleo-STM32G474RET6>>";
 uint8_t started[]=
@@ -23,106 +25,130 @@ uint8_t started[]=
 uint8_t newline[]="\r\n";
 uint8_t backspace[]="\b \b";
 uint8_t cmdNotFound[]="Command not found\r\n";
-uint8_t brian[]="Brian is in the kitchen\r\n";
-uint8_t uartRxReceived;
-uint8_t uartRxBuffer[UART_RX_BUFFER_SIZE];
-uint8_t uartTxBuffer[UART_TX_BUFFER_SIZE];
 
-char	 	cmdBuffer[CMD_BUFFER_SIZE];
-int 		idx_cmd;
+extern uint16_t adc_phase_values[PHASE_QUANTITY];
+extern uint16_t adc_bus_values[BUS_QUANTITY];
+
+struct h_shell_struct *h_shell;
+
 char* 		argv[MAX_ARGS];
 int		 	argc = 0;
 char*		token;
 int 		newCmdReady = 0;
 
-int speed(char **argv,int argc)
+
+
+
+int Shell_Add(h_shell_t *h_shell, char *name, shell_func_pointer_t pfunc, char *description)
 {
-	uint32_t speed = atoi(argv[1]);//speed in expected in % of max speed
-	if(argc != 2)
+	if (h_shell->shell_func_list_size < SHELL_FUNC_LIST_MAX_SIZE)
 	{
-		uint8_t error_message[] = "Error : speed function expect exactly 1 parameter \r\n";
-		HAL_UART_Transmit(&huart2, error_message, sizeof(error_message), HAL_MAX_DELAY);
-
-		return 1;
+		h_shell->shell_func_list[h_shell->shell_func_list_size].name = name;
+		h_shell->shell_func_list[h_shell->shell_func_list_size].func = pfunc;
+		h_shell->shell_func_list[h_shell->shell_func_list_size].description = description;
+		h_shell->shell_func_list_size++;
+		return 0;
 	}
-	else if(speed > 95)//on vérifie qu'on met pas la vitesse ne soit pas au dessus de 95% de la max par sécurité
+	return -1;
+}
+
+int Shell_Help(h_shell_t *h_shell,char **argv,int argc)
+{
+	int i;
+	for (i = 0; i < h_shell->shell_func_list_size; i++)
 	{
-		uint8_t error_message[] = "speed function must not exceed 95% of max value  \r\n";
-		HAL_UART_Transmit(&huart2, error_message, sizeof(error_message), HAL_MAX_DELAY);
-	}
-	PWM_set_pulse(speed);
-	int uartTxStringLength = snprintf((char *)uartTxBuffer, UART_TX_BUFFER_SIZE, "speed set to %lu of max value \r\n",(unsigned long)speed);
-	HAL_UART_Transmit(&huart2, uartTxBuffer, uartTxStringLength, HAL_MAX_DELAY);
+		int size;
+		memset(h_shell->uartTxBuffer, 0, UART_TX_BUFFER_SIZE);
+		size = snprintf((char *)h_shell->uartTxBuffer, UART_TX_BUFFER_SIZE, "%s: %s\r\n",
+		                h_shell->shell_func_list[i].name,
+		                h_shell->shell_func_list[i].description);
 
+		HAL_UART_Transmit(&huart2, h_shell->uartTxBuffer,size, HAL_MAX_DELAY);
+
+	}
+
+	return 0;
 }
 
 
+void Shell_Init(void)
+{
+	memset(argv, 0, MAX_ARGS*sizeof(char*));
+	memset(h_shell->cmdBuffer, 0, CMD_BUFFER_SIZE*sizeof(char));
+	memset(h_shell->uartRxBuffer, 0, UART_RX_BUFFER_SIZE*sizeof(char));
+	memset(h_shell->uartTxBuffer, 0, UART_TX_BUFFER_SIZE*sizeof(char));
 
-void Shell_Init(void){
-	memset(argv, NULL, MAX_ARGS*sizeof(char*));
-	memset(cmdBuffer, NULL, CMD_BUFFER_SIZE*sizeof(char));
-	memset(uartRxBuffer, NULL, UART_RX_BUFFER_SIZE*sizeof(char));
-	memset(uartTxBuffer, NULL, UART_TX_BUFFER_SIZE*sizeof(char));
+	Shell_Add(h_shell, "help", Shell_Help, "Display help for known functions of the shell");
+	Shell_Add(h_shell, "PWM_speed_control", PWM_Speed_Control, "Set the speed of the motor in %. 0 being Full reverse speed, 50 neutral and 100 full forward speed");
+	Shell_Add(h_shell, "PWM_Start", PWM_Start, "Start PWM generation output to control motor speed");
+	Shell_Add(h_shell, "PWM_Stop", PWM_Stop, "Stop PWM generation output to disable motor");
+	Shell_Add(h_shell, "ADC_Read", ADC_Read, "Display ADC_values concerning motor currents.");
 
-	HAL_UART_Receive_IT(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE);
+
+
+	HAL_UART_Receive_IT(&huart2, h_shell->uartRxBuffer, UART_RX_BUFFER_SIZE);
 	HAL_UART_Transmit(&huart2, started, strlen((char *)started), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart2, prompt, strlen((char *)prompt), HAL_MAX_DELAY);
 }
 
+static int Shell_Exec(h_shell_t *h_shell,char **argv,int argc)
+{
+	// Lookup and execute the command
+	char *user_func = argv[0]; // First token is the command
+	for (int i = 0; i < h_shell->shell_func_list_size; i++)
+	{
+		if (strcmp(h_shell->shell_func_list[i].name, user_func) == 0)
+		{
+			// Execute the command
+			int result = h_shell->shell_func_list[i].func(h_shell,argv,argc );
+
+			// Clean up dynamically allocated memory
+			for (int j = 0; j < argc; j++)
+			{
+				free(argv[j]);
+			}
+			return result;
+		}
+	}
+	HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
+	return 1;
+}
 
 void Shell_Loop(void){
-	if(uartRxReceived){
-		switch(uartRxBuffer[0]){
+	if(h_shell->uartRxReceived){
+		switch(h_shell->uartRxBuffer[0]){
 		case ASCII_CR: // Nouvelle ligne, instruction à traiter
 			HAL_UART_Transmit(&huart2, newline, sizeof(newline), HAL_MAX_DELAY);
-			cmdBuffer[idx_cmd] = '\0';
+			h_shell->cmdBuffer[h_shell->idx_cmd] = '\0';
 			argc = 0;
-			token = strtok(cmdBuffer, " ");
+			token = strtok(h_shell->cmdBuffer, " ");
 			while(token!=NULL){
 				argv[argc++] = token;
 				token = strtok(NULL, " ");
 			}
-			idx_cmd = 0;
+			h_shell->idx_cmd = 0;
 			newCmdReady = 1;
 			break;
 		case ASCII_BACK: // Suppression du dernier caractère
-			cmdBuffer[idx_cmd--] = '\0';
+			h_shell->cmdBuffer[h_shell->idx_cmd--] = '\0';
 			HAL_UART_Transmit(&huart2, backspace, sizeof(backspace), HAL_MAX_DELAY);
 			break;
 
 		default: // Nouveau caractère
-			cmdBuffer[idx_cmd++] = uartRxBuffer[0];
-			HAL_UART_Transmit(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
+			h_shell->cmdBuffer[h_shell->idx_cmd++] = h_shell->uartRxBuffer[0];
+			HAL_UART_Transmit(&huart2, h_shell->uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
 		}
-		uartRxReceived = 0;
+		h_shell->uartRxReceived = 0;
 	}
 
 	if(newCmdReady){
-		if(strcmp(argv[0],"WhereisBrian?")==0){
-			HAL_UART_Transmit(&huart2, brian, sizeof(brian), HAL_MAX_DELAY);
-		}
-		else if(strcmp(argv[0],"help")==0){
-			int uartTxStringLength = snprintf((char *)uartTxBuffer, UART_TX_BUFFER_SIZE, "Print all available functions here\r\n");
-			HAL_UART_Transmit(&huart2, uartTxBuffer, uartTxStringLength, HAL_MAX_DELAY);
-		}
-		else if(strcmp(argv[0],"speed")==0){
-			speed(argv,argc);
-		}
-		else if(strcmp(argv[0],"start")==0){
-			PWM_Start();
-		}
-		else if(strcmp(argv[0],"stop")==0){
-			PWM_Stop();
-		}
-		else{
-			HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
-		}
-		HAL_UART_Transmit(&huart2, prompt, sizeof(prompt), HAL_MAX_DELAY);
+
+		Shell_Exec(h_shell, argv,argc);
 		newCmdReady = 0;
 	}
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef * huart){
-	uartRxReceived = 1;
-	HAL_UART_Receive_IT(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE);
+	h_shell->uartRxReceived = 1;
+	HAL_UART_Receive_IT(&huart2, h_shell->uartRxBuffer, UART_RX_BUFFER_SIZE);
 }

@@ -50,7 +50,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+extern PWM_HandleTypeDef pwm_handle;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -104,16 +104,14 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 	Shell_Init();
-	start_adc();
+	ADC_Start();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		//Shell_Loop();
-		mesure_courant();
-		HAL_Delay(1000);
+		Shell_Loop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -187,7 +185,20 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
+	/* USER CODE BEGIN Callback 1 */
+	if (htim->Instance == TIM7)
+	{
+		if(pwm_handle.interrupt_counter < RAMP_TIME - 1) //on update la valeur de pulse chaque miliseconde
+		{
+			pwm_handle.intermediate_pulse1 = pwm_handle.previous_pulse1 + (pwm_handle.pulse1 - pwm_handle.previous_pulse1)  * (pwm_handle.interrupt_counter+1)/RAMP_TIME ;
+			pwm_handle.intermediate_pulse2 = pwm_handle.previous_pulse2 + (pwm_handle.pulse2 - pwm_handle.previous_pulse2)  * (pwm_handle.interrupt_counter+1)/RAMP_TIME ;
 
+			__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1,pwm_handle.intermediate_pulse1);
+			__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2,pwm_handle.intermediate_pulse2);
+
+			pwm_handle.interrupt_counter++;
+		}
+	}
   /* USER CODE END Callback 1 */
 }
 

@@ -1,3 +1,2 @@
-../Core/Src/mylibs/mesure_courant.c:19:6:start_adc	1
-../Core/Src/mylibs/mesure_courant.c:26:6:mesure_courant	2
-../Core/Src/mylibs/mesure_courant.c:41:6:HAL_ADC_ConvCpltCallback	2
+../Core/Src/mylibs/mesure_courant.c:21:5:ADC_Start	1
+../Core/Src/mylibs/mesure_courant.c:34:5:ADC_Read	1

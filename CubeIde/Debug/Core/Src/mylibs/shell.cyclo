@@ -1,4 +1,6 @@
-../Core/Src/mylibs/shell.c:38:5:speed	3
-../Core/Src/mylibs/shell.c:65:6:Shell_Init	1
-../Core/Src/mylibs/shell.c:77:6:Shell_Loop	11
-../Core/Src/mylibs/shell.c:129:6:HAL_UART_RxCpltCallback	1
+../Core/Src/mylibs/shell.c:42:5:Shell_Add	2
+../Core/Src/mylibs/shell.c:55:5:Shell_Help	2
+../Core/Src/mylibs/shell.c:74:6:Shell_Init	1
+../Core/Src/mylibs/shell.c:94:12:Shell_Exec	4
+../Core/Src/mylibs/shell.c:117:6:Shell_Loop	6
+../Core/Src/mylibs/shell.c:151:6:HAL_UART_RxCpltCallback	1
