@@ -42,6 +42,7 @@ int speed(char **argv,int argc)
 	{
 		uint8_t error_message[] = "Error : speed function expect exactly 1 parameter \r\n";
 		HAL_UART_Transmit(&huart2, error_message, sizeof(error_message), HAL_MAX_DELAY);
+
 		return 1;
 	}
 //	else if(!isdigit(speed))
@@ -55,10 +56,9 @@ int speed(char **argv,int argc)
 		uint8_t error_message[] = "speed function must not exceed 95% of max value  \r\n";
 		HAL_UART_Transmit(&huart2, error_message, sizeof(error_message), HAL_MAX_DELAY);
 	}
-	set_pulse(speed);
-	uint8_t * success_message = "speed set to %lu of max value  \r\n";
-	snprintf((char *)success_message, sizeof(success_message), "speed set to %lu of max value \r\n", (unsigned long)speed);
-	HAL_UART_Transmit(&huart2, success_message, sizeof(success_message), HAL_MAX_DELAY);
+	PWM_set_pulse(speed);
+	int uartTxStringLength = snprintf((char *)uartTxBuffer, UART_TX_BUFFER_SIZE, "speed set to %lu of max value \r\n",(unsigned long)speed);
+	HAL_UART_Transmit(&huart2, uartTxBuffer, uartTxStringLength, HAL_MAX_DELAY);
 
 }
 
@@ -111,6 +111,12 @@ void Shell_Loop(void){
 		}
 		else if(strcmp(argv[0],"speed")==0){
 			speed(argv,argc);
+		}
+		else if(strcmp(argv[0],"start")==0){
+			PWM_Start();
+		}
+		else if(strcmp(argv[0],"stop")==0){
+			PWM_Stop();
 		}
 		else{
 			HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);

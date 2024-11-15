@@ -1,1 +1,4 @@
-../Core/Src/mylibs/pwm.c:18:6:set_pulse	1
+../Core/Src/mylibs/pwm.c:20:6:PWM_set_pulse	1
+../Core/Src/mylibs/pwm.c:33:6:PWM_Start	1
+../Core/Src/mylibs/pwm.c:51:6:PWM_Stop	1
+../Core/Src/mylibs/pwm.c:69:6:HAL_TIM_PeriodElapsedCallback	4
