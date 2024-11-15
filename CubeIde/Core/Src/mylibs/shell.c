@@ -45,12 +45,6 @@ int speed(char **argv,int argc)
 
 		return 1;
 	}
-//	else if(!isdigit(speed))
-//	{
-//		uint8_t error_message[] = " Error : speed function expect a parameter that is an int represention \r\n";
-//		HAL_UART_Transmit(&huart2, error_message, sizeof(error_message), HAL_MAX_DELAY);
-//		return 1;
-//	}
 	else if(speed > 95)//on vérifie qu'on met pas la vitesse ne soit pas au dessus de 95% de la max par sécurité
 	{
 		uint8_t error_message[] = "speed function must not exceed 95% of max value  \r\n";
@@ -61,6 +55,8 @@ int speed(char **argv,int argc)
 	HAL_UART_Transmit(&huart2, uartTxBuffer, uartTxStringLength, HAL_MAX_DELAY);
 
 }
+
+
 
 void Shell_Init(void){
 	memset(argv, NULL, MAX_ARGS*sizeof(char*));

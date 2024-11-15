@@ -11,7 +11,7 @@
 
 #define MAX_PULSE 8499
 #define NEUTRAL_PULSE 4249 // pulse auquel le moteur ne tourne pas
-#define RAMP_TIME 4000 //temps en milisecondes pour changer de pulse
+#define RAMP_TIME 6000 //temps en milisecondes pour changer de pulse
 void PWM_set_pulse(uint32_t speed);
 void PWM_Start();
 void PWM_Stop();

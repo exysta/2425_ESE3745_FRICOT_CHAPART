@@ -1,4 +1,5 @@
 "./Core/Src/adc.o"
+"./Core/Src/dma.o"
 "./Core/Src/gpio.o"
 "./Core/Src/main.o"
 "./Core/Src/stm32g4xx_hal_msp.o"
@@ -9,6 +10,7 @@
 "./Core/Src/system_stm32g4xx.o"
 "./Core/Src/tim.o"
 "./Core/Src/usart.o"
+"./Core/Src/mylibs/mesure_courant.o"
 "./Core/Src/mylibs/pwm.o"
 "./Core/Src/mylibs/shell.o"
 "./Core/Startup/startup_stm32g474retx.o"
