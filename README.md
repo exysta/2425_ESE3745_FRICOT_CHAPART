@@ -59,6 +59,7 @@ Nous ajoutons les fonctionnalités suivantes à notre projet :
   - **Commande start** : permet de fixer le rapport cyclique à 50% (vitesse nulle) et d'activer la génération des pwm (HAL_TIM_PWM_Start et HAL_TIMEx_PWMN_Start),
   - **Commande stop** : permet de désactiver la génération des PWM.
   - **Commande speed XXXX** : permet de définir le rapport cyclique à XXXX/PWM_MAX, mais afin de réduire l'appel à courant, nous avons établie une montée progressive à cette vitesse en quelques secondes. Nous avons effectué une rampe entre la valeur actuelle et la valeur cible avec un incrément de la PWM à un intervalle de temps régulier.
+    ![image](https://github.com/user-attachments/assets/d5b5604c-39ee-47f3-9d15-b98c16add0ef)
 
 ### 2.2. Mesure du courant
 
@@ -66,8 +67,9 @@ Nous devons mesurer les courants suivants :
   - Bus_Imes → PC2
   - U_Imes → PA1
   - V_Imes → PB1
-    
+
 Etablir une première mesure de courant avec les ADC en Pooling. Faites des tests à vitesse nulle, non nulle, et en charge (rajouter un couple resistif en consommant du courant sur la machine synchrone couplée à la MCC).
+![image](https://github.com/user-attachments/assets/5420be37-af1a-408e-8205-693ee8fae6e7)
 
 Une fois cette mesure validée, modifier la méthode d'acquisition de ces données en établissant une mesure à interval de temps régulier avec la mise en place d'une la chaine d'acquisition Timer/ADC/DMA.
 
@@ -81,3 +83,4 @@ Vous pouvez utiliser le même timer que celui de la génération des PWM pour qu
   - Déterminer les pin du stm32 utilisés pour faire cette mesure de vitesse,
   - Déterminer la fréquence à laquelle vous allez faire l'asservissement en vitesse du moteur.
   - Etablir le code de mesure de vitesse et le tester.
+![image](https://github.com/user-attachments/assets/70fd97d6-a289-4fb0-a48f-eefc4ba37168)
