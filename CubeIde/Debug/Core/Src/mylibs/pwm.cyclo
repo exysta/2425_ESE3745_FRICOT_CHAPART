@@ -1,4 +1,4 @@
 ../Core/Src/mylibs/pwm.c:21:5:PWM_Set_Pulse	1
 ../Core/Src/mylibs/pwm.c:35:5:PWM_Speed_Control	8
-../Core/Src/mylibs/pwm.c:69:5:PWM_Start	1
-../Core/Src/mylibs/pwm.c:88:5:PWM_Stop	1
+../Core/Src/mylibs/pwm.c:77:5:PWM_Start	1
+../Core/Src/mylibs/pwm.c:97:5:PWM_Stop	1

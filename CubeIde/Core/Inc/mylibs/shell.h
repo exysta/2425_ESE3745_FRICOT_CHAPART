@@ -10,7 +10,7 @@
 
 #define SHELL_FUNC_LIST_MAX_SIZE 32
 #define UART_RX_BUFFER_SIZE 1
-#define UART_TX_BUFFER_SIZE 64
+#define UART_TX_BUFFER_SIZE 128
 #define CMD_BUFFER_SIZE 64
 #define MAX_ARGS 9
 #define ASCII_LF 0x0A			// LF = line feed, saut de ligne
@@ -44,8 +44,8 @@ typedef struct h_shell_struct {
     int idx_cmd;
 } h_shell_t;
 
-void Shell_Init(void);
-void Shell_Loop(void);
+void Shell_Init( h_shell_t *h_shell);
+void Shell_Loop(h_shell_t *h_shell);
 
 
 #endif /* INC_MYLIBS_SHELL_H_ */

@@ -51,6 +51,8 @@
 
 /* USER CODE BEGIN PV */
 extern PWM_HandleTypeDef pwm_handle;
+extern h_shell_t h_shell;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -101,9 +103,10 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
   MX_TIM7_Init();
+  MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
 
-	Shell_Init();
+	Shell_Init(&h_shell);
 	ADC_Start();
   /* USER CODE END 2 */
 
@@ -111,7 +114,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		Shell_Loop();
+		Shell_Loop(&h_shell);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -199,6 +202,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			pwm_handle.interrupt_counter++;
 		}
 	}
+
+    if (htim == &htim16) { //on lance le calcul de vitesse toutes les secondes
+        calculate_motor_speed();
+
+    }
   /* USER CODE END Callback 1 */
 }
 

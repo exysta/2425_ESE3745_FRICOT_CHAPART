@@ -46,7 +46,7 @@ int PWM_Speed_Control(h_shell_t *h_shell, char **argv, int argc)
 		return 1;
 	}
 
-	else if (speed > 90 || speed < 10) //on vérifie qu'on met pas la vitesse ne soit pas au dessus de 95% de la max par sécurité
+	else if (new_speed > 90 || new_speed < 10) //on vérifie qu'on met pas la vitesse ne soit pas au dessus de 95% de la max par sécurité
 	{
 		uint8_t error_message[] =
 				"speed function must not exceed 90% of max value  \r\n";
@@ -81,6 +81,7 @@ int PWM_Start(h_shell_t *h_shell, char **argv, int argc)
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
 	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
 
+	speed = 50; //speed à 50 % du max
 	pwm_handle.interrupt_counter = 0;
 
 	pwm_handle.previous_pulse1 = htim1.Instance->CCR1;

@@ -8,6 +8,8 @@
 #include "mylibs/shell.h"
 #include "mylibs/pwm.h"
 #include "mylibs/mesure_courant.h"
+#include "mylibs/encoder.h"
+
 
 #include <stdio.h>
 #include <string.h>
@@ -26,10 +28,8 @@ uint8_t newline[]="\r\n";
 uint8_t backspace[]="\b \b";
 uint8_t cmdNotFound[]="Command not found\r\n";
 
-extern uint16_t adc_phase_values[PHASE_QUANTITY];
-extern uint16_t adc_bus_values[BUS_QUANTITY];
 
-struct h_shell_struct *h_shell;
+h_shell_t h_shell;
 
 char* 		argv[MAX_ARGS];
 int		 	argc = 0;
@@ -71,7 +71,7 @@ int Shell_Help(h_shell_t *h_shell,char **argv,int argc)
 }
 
 
-void Shell_Init(void)
+void Shell_Init( h_shell_t *h_shell)
 {
 	memset(argv, 0, MAX_ARGS*sizeof(char*));
 	memset(h_shell->cmdBuffer, 0, CMD_BUFFER_SIZE*sizeof(char));
@@ -83,7 +83,10 @@ void Shell_Init(void)
 	Shell_Add(h_shell, "PWM_Start", PWM_Start, "Start PWM generation output to control motor speed");
 	Shell_Add(h_shell, "PWM_Stop", PWM_Stop, "Stop PWM generation output to disable motor");
 	Shell_Add(h_shell, "ADC_Read", ADC_Read, "Display ADC_values concerning motor currents.");
+	Shell_Add(h_shell, "ENCODER_start", ENCODER_start, "Start the encoder to calculate pulses per second");
+	Shell_Add(h_shell, "ENCODER_print_speed", ENCODER_print_speed, "Display the pulses per minute of the motor encoder.");
 
+	h_shell->idx_cmd = 0;
 
 
 	HAL_UART_Receive_IT(&huart2, h_shell->uartRxBuffer, UART_RX_BUFFER_SIZE);
@@ -108,13 +111,16 @@ static int Shell_Exec(h_shell_t *h_shell,char **argv,int argc)
 				free(argv[j]);
 			}
 			return result;
+
 		}
 	}
 	HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, prompt, strlen((char *)prompt), HAL_MAX_DELAY);
+
 	return 1;
 }
 
-void Shell_Loop(void){
+void Shell_Loop(h_shell_t *h_shell){
 	if(h_shell->uartRxReceived){
 		switch(h_shell->uartRxBuffer[0]){
 		case ASCII_CR: // Nouvelle ligne, instruction à traiter
@@ -145,10 +151,13 @@ void Shell_Loop(void){
 
 		Shell_Exec(h_shell, argv,argc);
 		newCmdReady = 0;
+		HAL_UART_Transmit(&huart2, "\r\n", 2, HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, prompt, strlen((char *)prompt), HAL_MAX_DELAY);
 	}
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef * huart){
-	h_shell->uartRxReceived = 1;
-	HAL_UART_Receive_IT(&huart2, h_shell->uartRxBuffer, UART_RX_BUFFER_SIZE);
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef * huart)
+{
+	h_shell.uartRxReceived = 1;
+	HAL_UART_Receive_IT(&huart2, h_shell.uartRxBuffer, UART_RX_BUFFER_SIZE);
 }

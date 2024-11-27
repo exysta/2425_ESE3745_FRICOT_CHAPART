@@ -8,8 +8,7 @@
 #ifndef INC_MYLIBS_MESURE_COURANT_H_
 #define INC_MYLIBS_MESURE_COURANT_H_
 
-#define PHASE_QUANTITY 2
-#define BUS_QUANTITY 1
+#define ADC_BUFFER_SIZE 3
 
 #include "shell.h"
 int ADC_Start();

@@ -5,16 +5,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Core/Src/mylibs/encoder.c \
 ../Core/Src/mylibs/mesure_courant.c \
 ../Core/Src/mylibs/pwm.c \
 ../Core/Src/mylibs/shell.c 
 
 OBJS += \
+./Core/Src/mylibs/encoder.o \
 ./Core/Src/mylibs/mesure_courant.o \
 ./Core/Src/mylibs/pwm.o \
 ./Core/Src/mylibs/shell.o 
 
 C_DEPS += \
+./Core/Src/mylibs/encoder.d \
 ./Core/Src/mylibs/mesure_courant.d \
 ./Core/Src/mylibs/pwm.d \
 ./Core/Src/mylibs/shell.d 
@@ -27,7 +30,7 @@ Core/Src/mylibs/%.o Core/Src/mylibs/%.su Core/Src/mylibs/%.cyclo: ../Core/Src/my
 clean: clean-Core-2f-Src-2f-mylibs
 
 clean-Core-2f-Src-2f-mylibs:
-	-$(RM) ./Core/Src/mylibs/mesure_courant.cyclo ./Core/Src/mylibs/mesure_courant.d ./Core/Src/mylibs/mesure_courant.o ./Core/Src/mylibs/mesure_courant.su ./Core/Src/mylibs/pwm.cyclo ./Core/Src/mylibs/pwm.d ./Core/Src/mylibs/pwm.o ./Core/Src/mylibs/pwm.su ./Core/Src/mylibs/shell.cyclo ./Core/Src/mylibs/shell.d ./Core/Src/mylibs/shell.o ./Core/Src/mylibs/shell.su
+	-$(RM) ./Core/Src/mylibs/encoder.cyclo ./Core/Src/mylibs/encoder.d ./Core/Src/mylibs/encoder.o ./Core/Src/mylibs/encoder.su ./Core/Src/mylibs/mesure_courant.cyclo ./Core/Src/mylibs/mesure_courant.d ./Core/Src/mylibs/mesure_courant.o ./Core/Src/mylibs/mesure_courant.su ./Core/Src/mylibs/pwm.cyclo ./Core/Src/mylibs/pwm.d ./Core/Src/mylibs/pwm.o ./Core/Src/mylibs/pwm.su ./Core/Src/mylibs/shell.cyclo ./Core/Src/mylibs/shell.d ./Core/Src/mylibs/shell.o ./Core/Src/mylibs/shell.su
 
 .PHONY: clean-Core-2f-Src-2f-mylibs
 

@@ -10,6 +10,7 @@
 "./Core/Src/system_stm32g4xx.o"
 "./Core/Src/tim.o"
 "./Core/Src/usart.o"
+"./Core/Src/mylibs/encoder.o"
 "./Core/Src/mylibs/mesure_courant.o"
 "./Core/Src/mylibs/pwm.o"
 "./Core/Src/mylibs/shell.o"
