@@ -68,18 +68,32 @@ Nous devons mesurer les courants suivants :
   - U_Imes → PA1
   - V_Imes → PB1
 
+D'après la datasheet, la sensibilité du capteur est de 50 mV/A.
+Pour V_ref=3.3 V et une résolution de 12 bits : U_mesuré​ = 2063 × (3.3/4095) = 1.66 V
+
 Etablir une première mesure de courant avec les ADC en DMA. Faites des tests à vitesse nulle, non nulle, et en charge (rajouter un couple resistif en consommant du courant sur la machine synchrone couplée à la MCC).
 
-Vous pouvez utiliser le même timer que celui de la génération des PWM pour que les mesures de courant soit synchrone aux PWM. Pour vérifier cela, utiliser un GPIO disponible sur la carte pour établir une impulsion lors de la mesure de la valeur.Il faut penser à mettre la clock source du timer utilisé en internal clock pour la génération de trigger afin de lancer automatiquement les conversions par le DMA. 
+Pour cela, nous utilisons le même timer que celui de la génération des PWM pour que les mesures de courant soit synchrone aux PWM.
+
+Il faut penser à mettre la clock source du timer utilisé en internal clock pour la génération de trigger afin de lancer automatiquement les conversions par le DMA. 
 
 ![image](https://github.com/user-attachments/assets/5420be37-af1a-408e-8205-693ee8fae6e7)
 
 ### 2.3. Mesure de vitesse
 
+D'après la datasheet du capteur, Maximum Data Rate = 32 Mbps.
+
+Les pin du stm32 utilisés pour faire cette mesure de vitesse sont : 
+  - ENC_A → PA6
+  - ENC_B → PA4
+  - ENC_Z → PC8
+
   - Déterminer la fonction de transfert du capteur de vitesse,
   - Déterminer la constant de temps mécanique du moteur :
       - Pour cela, vous pouvez envoyer un échelon de tension au moteur et analyser la vitesse à partir de la sonde tachymétrique (que l'on n'utilisera pas pour le reste du TP).
-  - Déterminer les pin du stm32 utilisés pour faire cette mesure de vitesse,
+
   - Déterminer la fréquence à laquelle vous allez faire l'asservissement en vitesse du moteur.
-  - Etablir le code de mesure de vitesse et le tester.
+
+Dans notre shell, nous utilisons les commandes suivantes :
+    
 ![image](https://github.com/user-attachments/assets/70fd97d6-a289-4fb0-a48f-eefc4ba37168)
