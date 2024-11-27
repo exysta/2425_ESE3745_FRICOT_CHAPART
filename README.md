@@ -42,7 +42,7 @@ Nous effectuons les premiers tests dans les conditions suivantes (dans l'ordre) 
   - Rapport cyclique de 50%
   - Rapport cyclique de 70%
 
-Avec un rapport cyclique de 50%, le moteur ne tourne pas, cela s'explique par le fait que ... Lorsque l'on modifie le rapport cyclique à 70%, le moteur tourne.
+Avec un rapport cyclique de 50%, le moteur ne tourne pas, cela s'explique par le fait que la tension moyenne vu par le moteur est nulle Lorsque l'on modifie le rapport cyclique à 70%, le moteur tourne dans un sens eet à 30%, il tourne à la même vitesse dans l'autre sens.
 
 Pour palier à ce problème, nous générons une montée progressive du rapport cyclique jusqu'à arriver à la vitesse cible commandé par la commande définie précédemment.
 
