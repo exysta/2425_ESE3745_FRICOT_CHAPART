@@ -68,12 +68,11 @@ Nous devons mesurer les courants suivants :
   - U_Imes → PA1
   - V_Imes → PB1
 
-Etablir une première mesure de courant avec les ADC en Pooling. Faites des tests à vitesse nulle, non nulle, et en charge (rajouter un couple resistif en consommant du courant sur la machine synchrone couplée à la MCC).
+Etablir une première mesure de courant avec les ADC en DMA. Faites des tests à vitesse nulle, non nulle, et en charge (rajouter un couple resistif en consommant du courant sur la machine synchrone couplée à la MCC).
+
+Vous pouvez utiliser le même timer que celui de la génération des PWM pour que les mesures de courant soit synchrone aux PWM. Pour vérifier cela, utiliser un GPIO disponible sur la carte pour établir une impulsion lors de la mesure de la valeur.Il faut penser à mettre la clock source du timer utilisé en internal clock pour la génération de trigger afin de lancer automatiquement les conversions par le DMA. 
+
 ![image](https://github.com/user-attachments/assets/5420be37-af1a-408e-8205-693ee8fae6e7)
-
-Une fois cette mesure validée, modifier la méthode d'acquisition de ces données en établissant une mesure à interval de temps régulier avec la mise en place d'une la chaine d'acquisition Timer/ADC/DMA.
-
-Vous pouvez utiliser le même timer que celui de la génération des PWM pour que les mesures de courant soit synchrone aux PWM. Pour vérifier cela, utiliser un GPIO disponible sur la carte pour établir une impulsion lors de la mesure de la valeur.
 
 ### 2.3. Mesure de vitesse
 
