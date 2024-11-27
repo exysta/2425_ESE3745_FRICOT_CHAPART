@@ -67,6 +67,17 @@ Nous devons mesurer les courants suivants :
   - U_Imes → PA1
   - V_Imes → PB1
     
-  - Etablir une première mesure de courant avec les ADC en Pooling. Faites des tests à vitesse nulle, non nulle, et en charge (rajouter un couple resistif en consommant du courant sur la machine synchrone couplée à la MCC).
-  - Une fois cette mesure validée, modifier la méthode d'acquisition de ces données en établissant une mesure à interval de temps régulier avec la mise en place d'une la chaine d'acquisition Timer/ADC/DMA.
-  - Vous pouvez utiliser le même timer que celui de la génération des PWM pour que les mesures de courant soit synchrone aux PWM. Pour vérifier cela, utiliser un GPIO disponible sur la carte pour établir une impulsion lors de la mesure de la valeur.
+Etablir une première mesure de courant avec les ADC en Pooling. Faites des tests à vitesse nulle, non nulle, et en charge (rajouter un couple resistif en consommant du courant sur la machine synchrone couplée à la MCC).
+
+Une fois cette mesure validée, modifier la méthode d'acquisition de ces données en établissant une mesure à interval de temps régulier avec la mise en place d'une la chaine d'acquisition Timer/ADC/DMA.
+
+Vous pouvez utiliser le même timer que celui de la génération des PWM pour que les mesures de courant soit synchrone aux PWM. Pour vérifier cela, utiliser un GPIO disponible sur la carte pour établir une impulsion lors de la mesure de la valeur.
+
+### 2.3. Mesure de vitesse
+
+  - Déterminer la fonction de transfert du capteur de vitesse,
+  - Déterminer la constant de temps mécanique du moteur :
+      - Pour cela, vous pouvez envoyer un échelon de tension au moteur et analyser la vitesse à partir de la sonde tachymétrique (que l'on n'utilisera pas pour le reste du TP).
+  - Déterminer les pin du stm32 utilisés pour faire cette mesure de vitesse,
+  - Déterminer la fréquence à laquelle vous allez faire l'asservissement en vitesse du moteur.
+  - Etablir le code de mesure de vitesse et le tester.
