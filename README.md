@@ -36,6 +36,10 @@ donc on fixe un CCR à 5099 (cela revient à changer le pulse dans l'ioc pour ch
 Pour obtenir un complémentaire décalé, l'autre PWM doit avoir un rapport cyclique de 1-0.6 = 0.4 donc CCR = 3399.
 On doit configurer le mode de comptage du timer en center aligned mode 1 pour compter décompter et avoir un complémentaire décalé.
 
+![image](https://github.com/user-attachments/assets/5427b828-435e-4cea-88f0-e7b1fc20ddbe)
+
+![image](https://github.com/user-attachments/assets/6c29613e-953c-4885-abab-99e330509307)
+
 La valeur à mettre dans le registre DTG pour le dead time est 000 10100. On configure un pas d'environ 5.8 ns basé sur notre sysclock à 170 MHz en mettant les 3 premiers bits à 0.
 Ensuite, on écrit 20 en binaire sur les 5 derniers bits pour avoir un deadtime total de 5.8 * 20 = 114ns. Cela coresspond à une valeur en décimal de 20 à mettre dans l'ioc dans la partie DeadTime.
 
