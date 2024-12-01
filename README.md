@@ -24,7 +24,7 @@ On génère quatre PWM sur les bras de pont U et V pour contrôler le hacheur à
 
 Cahier des charges :
   - **Fréquence de la PWM** : 20kHz
-  - **Temps mort minimum** : à voir selon la datasheet des transistors (faire valider la valeur)
+  - **Temps mort minimum** : à voir selon la datasheet des transistors 
   - **Résolution minimum** : 10bits (ARR > 1024 )
 
 Pour que la PWM est une fréquence de 20kHz, sachant que Fsys = 170 MHz, on doit fixer ARR + 1 = 8500. La résolution est d'environ 13 bits.
